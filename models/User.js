@@ -2,11 +2,10 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
-    rollNo: {type:String, required:true, unique:true},
     name: {type:String, required:true, unique:true},
     password: {type:String, required:true},
-    Day: {type:String, required:true},
-    role: {type:String, enum: ['admin, student'], default:'student'}
+    role: {type:String, enum: ['admin', 'student'], default:'student'},
+    status: {type:mongoose.Schema.Types.ObjectId, ref: 'Status'}
 }, { timestamps:true })
 
 userSchema.pre('save', async function(next){
@@ -16,7 +15,7 @@ userSchema.pre('save', async function(next){
 })
 
 userSchema.methods.comparePassword = async function(candidatePw){
-    return await bcrypt.compare(candidatePw, process.env.JWT_SECRET)
+    return await bcrypt.compare(candidatePw, this.password)
 }
 
 module.exports = mongoose.model('User', userSchema)
