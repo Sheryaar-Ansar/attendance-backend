@@ -2,6 +2,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 const app = express()
 
+dotenv.config()
+
 const authRoutes = require('./routes/authRoute')
 const studentRoutes = require('./routes/studentRoute')
 
